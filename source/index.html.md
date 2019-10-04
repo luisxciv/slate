@@ -16,115 +16,67 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
-
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
-
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Bienvenidos a la documentacion oficial de Saive, aqui se encuentra a detalle los parametros requeridos para el correcto funcionamiento de las cloud functions bajo el endpoint
+`https://us-central1-saive-70572.cloudfunctions.net/`
 
 # Authentication
 
-> To authorize, use this code:
+# Saive APP
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
-
+## /register
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+    "data":  {
+        "id": "1",
+        "name": "Luis", 
+        "email": "luisxciv@gmail.com",
+        "gender": "Male", 
+        "country": "MX", 
+        "state": "Queretato",
+        "birthdate": 1570207276000, 
+        "brand_carrier":"AT&T",
+        "phone_model":"Iphone 6", 
+        "phone_number": "4426682688",
+        "platform":"iOS",
+        "car_brand":"Toyota", 
+        "car_model":"Prius",
+        "car_year":2019,
+        "insurance_company": "Mapfre", 
+        "insurance_expiration": 1569937894000, 
+        "reference_number": 293847,
+        "push_token": "LY83H0AHEVX5J4VX99WB7",
+        "saive_insurance": false
+    }
+}
 ```
-
-This endpoint retrieves all kittens.
-
+Registra un usuario en la base de datos
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST https://us-central1-saive-70572.cloudfunctions.net/register`
 
 ### Query Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento con el que se va a crear el registro en /mobile_user | None
+name | STR | El nombre del usuario | None
+email | STR | El e-mail del usuario | None
+gender | STR | Genero del usuario: `Male`, `Female` | None
+country | STR | Codigo de pais de residencia del usuario: `MX` | None
+state | STR | Nombre del estado de residencia del usuario: `Queretato` | None
+birthdate | INT | Unix timestamp en milisegundos con la fecha de nacimiento del usuario | None
+brand_carrier | STR | Nombre de la compania carrier del tel del usuario | `Null`
+phone_model | STR | Modelo del smartphone del usuario | None
+phone_number | STR | Telefono del usuario | None
+platform | STR | Sistema operativo del smartphone del usuario `iOS`, `Android` | None
+car_brand | STR | Marca de automobil | None
+car_model | STR | Modelo del automobil | None
+car_year | INT | Ano de manufactura del automobil | None
+insurance_company | STR | Nombre de la compania con la que el usuario esta asegurado | `Null`
+insurance_expiration | INT | Fecha de expiracion del seguro del usuario | `Null`
+reference_number | INT | Numero de referencia de seguro | `Null`
+push_token | STR | Token de notificaciones firebase | None 
+saive_insurance | BOOL | Especifica si el usuario esta asegurado con saive | `Null`
 
 <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
