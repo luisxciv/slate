@@ -77,112 +77,191 @@ insurance_expiration | INT | Fecha de expiracion del seguro del usuario | `Null`
 reference_number | INT | Numero de referencia de seguro | `Null`
 push_token | STR | Token de notificaciones firebase | None 
 saive_insurance | BOOL | Especifica si el usuario esta asegurado con saive | `Null`
+### Response
+
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+Status:`ok` — msg: `Se creo el usuario con exito`
 </aside>
 
-## Get a Specific Kitten
+<aside class="warning">
+Status:`error` — msg: `Este mail ya esta registrado`
+</aside>
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
+## /score
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+    "data":  {
+        "id": "1",
+        "report_date": "2019-30-09 12:00:00",
+        "latitude": "20.598324",
+        "longitude": "-100.390755",
+        "time": 1,
+        "speed": 100, 
+        "distance": 2,
+        "acceleration": 30,
+        "trip_id": "ZPD93"
+    }
 }
 ```
+Guarda datos de manejo en tiempo real
 
-This endpoint retrieves a specific kitten.
+Campos de control: 
+ `last_latitude`
+ `last_longitude`
+ `last_score_date`
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+ Estadisticas generales del usuario generales del usuario:
+ 
+ `speed_counter`
+ `avg_speed`
+ `speed_total`
+ `acceleration_counter`
+ `avg_acceleration`
+ `acceleration_total`
+ `distance_counter`
+ `distance_total`
+ `daily_distance`
+ `avg_distance`
+ `daily_time`
+ `time_total`
+
+ Estadisticas de viaje, contorlados por los prefijos  `last_trip_*`
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST https://us-central1-saive-70572.cloudfunctions.net/changeInsurance`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+report_date | STR | La fecha en la que se levanto la info | None
+latitude | STR | latitud | None
+longitude | STR | longitud | None 
+time | INT | El tiempo de manejo | None 
+speed | INT | La velocidad de manejo | None 
+distance | INT | La distancia manejda | None 
+acceleration | INT | La aceleracion del vehiculo | None 
+trip_id | STR | El id del viaje (debe ser unico) | None
 
-## Delete a Specific Kitten
 
-```ruby
-require 'kittn'
+### Response
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
+<aside class="success">
+Status:`ok` — msg: `New score for user`
+</aside>
 
-```python
-import kittn
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
+<aside class="warning">
+Status:`error` — msg: `La velocidaad de manejo sobrepasa los limites, se imitio el score.`
+</aside>
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
+## /changeUsername
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+    "data":  {
+        "id": "1",
+        "username": "Luisxciv" 
+    }
 }
 ```
-
-This endpoint deletes a specific kitten.
-
+Cambia el username 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`POST https://us-central1-saive-70572.cloudfunctions.net/changeUsername`
 
-### URL Parameters
+### Query Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+username | STR | Username | None
+
+### Response
+
+
+<aside class="success">
+Status:`ok` — msg: `Se cambio el nombre del usuario`
+</aside>
+
+<aside class="warning">
+Status:`error` — msg: `Tu usuario tiene mas de 9 caracteres o tiene caracteres especiales.`
+</aside>
+
+
+## /usernameExists
+```json
+{
+    "data":  {
+        "id": "1",
+        "username": "Luisxciv" 
+    }
+}
+```
+Cambia el username 
+### HTTP Request
+
+`POST https://us-central1-saive-70572.cloudfunctions.net/usernameExists`
+
+### Query Parameters
+
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+username | STR | Username | None
+
+### Response
+
+
+<aside class="success">
+Status:`ok` — msg: `Nombre de usuario disponible`
+</aside>
+
+<aside class="success">
+Status:`ok` — msg: `Nombre de usuario no esta disponible`
+</aside>
+
+<aside class="warning">
+Status:`error` — msg: `Tu usuario tiene mas de 9 caracteres o tiene caracteres especiales.`
+</aside>
+
+
+## /changeInsurance
+```json
+{
+    "data":  {
+        "id": "1",
+        "insurance_company": "Chubb",
+        "insurance_expiration": "2019-10-01",
+        "saive_insurance": false,
+        "reference_number": 299345
+
+    }
+}
+```
+Cambia el username 
+### HTTP Request
+
+`POST https://us-central1-saive-70572.cloudfunctions.net/changeInsurance`
+
+### Query Parameters
+
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+insurance_company | STR | Compania de seguros | None
+insurance_expiration | STR | Fecha de expiracion del seguro `YYYY-MM-DD` | None
+saive_insurance | BOOL |Si el usuario esta asegurado con saive | `Null`
+reference_number | INT | Numero de referencia de seguro | None
+
+
+
+### Response
+
+<aside class="success">
+Status:`ok` — msg: `e actualizaron los datos del seguro`
+</aside>
+
 
