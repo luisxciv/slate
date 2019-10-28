@@ -21,7 +21,7 @@ Bienvenidos a la documentacion oficial de Saive, aqui se encuentra a detalle los
 
 # Authentication
 
-# Saive APP
+# Cloud Functions
 
 ## /register
 ```json
@@ -100,33 +100,18 @@ Status:`error` — msg: `Este mail ya esta registrado`
         "speed": 100, 
         "distance": 2,
         "acceleration": 30,
-        "trip_id": "ZPD93"
+        "distractionEvents": 4, 
+			  "hard_acceleration_counter": 1,
+			  "hard_deacceleration_counter": 4, 
+			  "hard_cornering_counter": 2,
+			  "hard_acceleration_value": 3.2, 
+			  "hard_deacceleration_value": 4.0,
+			  "hard_cornering_value": 2.2
     }
 }
 ```
-Guarda datos de manejo en tiempo real
 
-Campos de control: 
- `last_latitude`
- `last_longitude`
- `last_score_date`
-
- Estadisticas generales del usuario generales del usuario:
- 
- `speed_counter`
- `avg_speed`
- `speed_total`
- `acceleration_counter`
- `avg_acceleration`
- `acceleration_total`
- `distance_counter`
- `distance_total`
- `daily_distance`
- `avg_distance`
- `daily_time`
- `time_total`
-
- Estadisticas de viaje, contorlados por los prefijos  `last_trip_*`
+Guarda una coleccion de datos de manejo, cada request debe ser manejado como un viaje individual del usuario
 
 ### HTTP Request
 
@@ -143,9 +128,70 @@ longitude | STR | longitud | None
 time | INT | El tiempo de manejo | None 
 speed | INT | La velocidad de manejo | None 
 distance | INT | La distancia manejda | None 
-acceleration | INT | La aceleracion del vehiculo | None 
-trip_id | STR | El id del viaje (debe ser unico) | None
+acceleration | INT | La aceleracion del vehiculo | 0
+distraction_events | INT | Contador de distracciones | 0
+hard_acceleration_counter | INT | Contador de aceleraciones fuertes | 0
+hard_acceleration_value | FLOAT | Promedio de score de aceleraciones fuertes | 0 
+hard_deacceleration_counter | INT | Contador de desaceleraciones fuertes | 0
+hard_deacceleration_value | FLOAT | Promedio de score de desaceleraciones fueres | 0 
+hard_cornering_counter | INT | Contador de eventos de cornering | 0
+hard_cornering_value | FLOAT | Promedio de score de eventos de cornering | 0 
 
+
+### Actualiza en /mobile_user
+### Campos de control: 
+Parameter | Type | Description 
+--------- | ------- | ----------- 
+ `last_latitude` | FLOAT | Ultima posicion X en plano
+ `last_longitude` | FLOAT | Ultima posicion Y en plano 
+ `last_score_date` | STR | Ultima fecha de score (ultimo report_date enviado)
+
+ 
+### Contadores
+Parameter | Type | Description 
+--------- | ------- | ----------- 
+ `speed_counter` | INT | Conteo de registros donde la velocidad respeta los limites saive
+ `acceleration_counter` | INT | Conteo de registros donde existio
+ `distance_counter` | INT | Conteo de registros donde se registro una distancia
+ `hard_acceleration_counter` | INT | Conteo de registros donde exisitio una aceleracion brusca 
+ `hard_deacceeleration_counter` | INT | Conteo de registros donde exisitio desaceleracion brusca
+ `hard_cornering_counter` | INT | Conteo de registros donde exisitio cornering brusco
+ 
+ <aside class="notice">
+Los campos de conteo y totales son utilizados en mayor parte para promediar las velocidades, tiempos, distancias y variables de manejo del usuario
+</aside>
+
+ 
+### Totales 
+Parameter | Type | Description 
+--------- | ------- | ----------- 
+ `speed_total` | INT | Suma de las velocidades
+ `time_total` | INT | Suma de los tiempos
+ `acceleration_total` | INT | Suma de las aceleraciones
+ `distance_total` | INT | Suma de las distancias
+ `hard_acceleration_total` | INT | Suma de scores de aceleraciones bruscas
+ `hard_deacceleration_total` | INT | Suma de scores de desaceleraciones bruscas
+ `hard_cornering_total` | INT | Suma de scores de cornering brusco 
+ `trips_total` | INT | Suma de total de trips
+` distractions_total` | INT | Suma total de distracciones de manejo
+
+### Promedios
+ Parameter | Type | Description 
+--------- | ------- | ----------- 
+ `avg_speed` | FlOAT | Velocidad promedio general del usuario
+ `avg_acceleration` | FLOAT | Acceleracion promedio del usuario
+ `avg_distance` | FLOAT | Distancia promedio del usuario por minuto
+ `avg_hard_acceleration` | FLOAT | Score promedio de aceleracion brusca
+ `avg_hard_deacceleration` | FLOAT | Score promedio de desaceleracion brusca 
+ `avg_hard_cornering` | FLOAT | Score promedio de cornering
+ `avg_trip_distractions` | INT | Numero de distracciones promedio por viaje 
+ `avg_trip_distance` | FLOAT | Numero de km promedio por viaje
+ 
+### Daily Stats
+ Parameter | Type | Description 
+--------- | ------- | ----------- 
+ `daily_time` | INT | Tiempo de manejo del dia
+ `daily_distance` | FLOAT | Distancia recorrida en el dia
 
 ### Response
 
@@ -153,10 +199,11 @@ trip_id | STR | El id del viaje (debe ser unico) | None
 Status:`ok` — msg: `New score for user`
 </aside>
 
-
 <aside class="warning">
 Status:`error` — msg: `La velocidaad de manejo sobrepasa los limites, se imitio el score.`
 </aside>
+
+
 
 ## /changeUsername
 ```json
@@ -241,7 +288,7 @@ Status:`error` — msg: `Tu usuario tiene mas de 9 caracteres o tiene caracteres
     }
 }
 ```
-Cambia el username 
+Actualiza los datos del usuario de la aseguradora 
 ### HTTP Request
 
 `POST https://us-central1-saive-70572.cloudfunctions.net/changeInsurance`
@@ -265,3 +312,38 @@ Status:`ok` — msg: `e actualizaron los datos del seguro`
 </aside>
 
 
+## /addCar
+```json
+{
+    "data":  {
+        "id": "1",
+         "car_brand": "Toyota", 
+        "car_model": "Camry",
+        "car_year": 2019,
+        "car_version": "First"
+
+    }
+}
+```
+Actualiza los datos del vehiculo
+### HTTP Request
+
+`POST https://us-central1-saive-70572.cloudfunctions.net/addCar`
+
+### Query Parameters
+
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+car_brand | STR | Marca del automobil | None
+car_model | STR | Modelo del automibil | None
+car_year | INT | Año de emision del automobil | None
+car_version | STR | Version del automibil | None
+
+
+
+### Response
+
+<aside class="success">
+Status:`ok` — msg: `Se actualizaron los datos del vehiculo`
+</aside>
