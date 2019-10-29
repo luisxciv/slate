@@ -340,10 +340,41 @@ car_model | STR | Modelo del automibil | None
 car_year | INT | Año de emision del automobil | None
 car_version | STR | Version del automibil | None
 
-
-
 ### Response
 
 <aside class="success">
 Status:`ok` — msg: `Se actualizaron los datos del vehiculo`
+</aside>
+
+
+## /insuranceLead
+```json
+{
+    "data":  {
+        "id": "1",
+         "phone": "4426682688", 
+        "postal_code": 76190,
+        "special": true
+
+    }
+}
+```
+Genera un lead de cotizacion (A definir triggers)
+### HTTP Request
+
+`POST https://us-central1-saive-70572.cloudfunctions.net/insuranceLead`
+
+### Query Parameters
+
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+id | STR | El id del documento en /mobile_user | None
+phone | STR | Telefono | None
+postal_code | INT | Codigo Postal | None
+special | BOOL | Si es taxista o servicio tipo uber | None
+
+### Response
+
+<aside class="success">
+Status:`ok` — msg: `Se genero un nuevo lead con exito`
 </aside>
