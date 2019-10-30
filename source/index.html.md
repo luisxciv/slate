@@ -91,23 +91,103 @@ Status:`error` — msg: `Este mail ya esta registrado`
 ## /score
 ```json
 {
-    "data":  {
-        "id": "1",
-        "report_date": "2019-30-09 12:00:00",
-        "latitude": "20.598324",
-        "longitude": "-100.390755",
-        "time": 1,
-        "speed": 100, 
-        "distance": 2,
-        "acceleration": 30,
-        "distractionEvents": 4, 
-			  "hard_acceleration_counter": 1,
-			  "hard_deacceleration_counter": 4, 
-			  "hard_cornering_counter": 2,
-			  "hard_acceleration_value": 3.2, 
-			  "hard_deacceleration_value": 4.0,
-			  "hard_cornering_value": 2.2
-    }
+    "data": [
+        {
+            "id": "1",
+            "positionSnapshot": {
+                "report_date": "2019-10-14 12:00:00",
+                "latitude": "20.598324",
+                "longitude": "-100.390755"
+            },
+            "drivingData": {
+                "time": 1,
+                "speed": 100,
+                "distance": 5,
+                "acceleration": 30
+            },
+            "scoreData": {
+                "deacceleration": {
+                    "count": 1,
+                    "value": 3.2
+                },
+                "acceleration": {
+                    "count": 2,
+                    "value": 4.0
+                },
+                "cornering": {
+                    "count": 2,
+                    "value": 2.2
+                },
+                "distractions": {
+                    "count": 0
+                }
+            }
+        },
+        {
+            "id": "1",
+            "positionSnapshot": {
+                "report_date": "2019-10-14 12:01:00",
+                "latitude": "20.598324",
+                "longitude": "-100.390755"
+            },
+            "drivingData": {
+                "time": 1,
+                "speed": 100,
+                "distance": 5,
+                "acceleration": 30
+            },
+            "scoreData": {
+                "deacceleration": {
+                    "count": 1,
+                    "value": 3.2
+                },
+                "acceleration": {
+                    "count": 1,
+                    "value": 4.0
+                },
+                "cornering": {
+                    "count": 2,
+                    "value": 2.2
+                },
+                "distractions": {
+                    "count": 1,
+                    "value": 1
+                }
+            }
+        },
+        {
+            "id": "1",
+            "positionSnapshot": {
+                "report_date": "2019-10-14 12:02:00",
+                "latitude": "20.598324",
+                "longitude": "-100.390755"
+            },
+            "drivingData": {
+                "time": 1,
+                "speed": 100,
+                "distance": 5,
+                "acceleration": 30
+            },
+            "scoreData": {
+                "deacceleration": {
+                    "count": 1,
+                    "value": 3.2
+                },
+                "acceleration": {
+                    "count": 1,
+                    "value": 4.0
+                },
+                "cornering": {
+                    "count": 0,
+                    "value": 2.2
+                },
+                "distractions": {
+                    "count": 1,
+                    "value": 0
+                }
+            }
+        }
+    ]
 }
 ```
 
