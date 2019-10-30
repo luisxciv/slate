@@ -311,6 +311,9 @@ reference_number | INT | Numero de referencia de seguro | None
 Status:`ok` — msg: `e actualizaron los datos del seguro`
 </aside>
 
+<aside class="warning">
+Status:`error` — msg: `Hubo un error al actualizar los datos.`
+</aside>
 
 ## /addCar
 ```json
@@ -345,7 +348,9 @@ car_version | STR | Version del automibil | None
 <aside class="success">
 Status:`ok` — msg: `Se actualizaron los datos del vehiculo`
 </aside>
-
+<aside class="warning">
+Status:`error` — msg: `Hubo un error al actualizar los datos.`
+</aside>
 
 ## /insuranceLead
 ```json
@@ -377,4 +382,7 @@ special | BOOL | Si es taxista o servicio tipo uber | None
 
 <aside class="success">
 Status:`ok` — msg: `Se genero un nuevo lead con exito`
+</aside>
+<aside class="warning">
+Status:`error` — msg: `Hubo un error al actualizar los datos.`
 </aside>
