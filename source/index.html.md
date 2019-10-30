@@ -466,3 +466,33 @@ Status:`ok` — msg: `Se genero un nuevo lead con exito`
 <aside class="warning">
 Status:`error` — msg: `Hubo un error al actualizar los datos.`
 </aside>
+
+## /getCar
+```json
+{
+    "data":  {
+        "brand": "Toyota"
+
+    }
+}
+```
+Obitnene todos los modelos, versiones y otros detalles de un modelo de auto. Se obtiene toda la informacion dentro de los documentos en la coleccion de `/car_brands/{brand}/*`
+### HTTP Request
+
+`POST https://us-central1-saive-70572.cloudfunctions.net/getCar`
+
+### Query Parameters
+
+Parameter | Type | Description | Default
+--------- | ------- | ----------- | -----
+brand | STR | Marca del automobil | None
+
+
+### Response
+
+<aside class="success">
+Status:`ok` — data: `Se genero un nuevo lead con exito`
+</aside>
+<aside class="warning">
+Status:`error` — msg: `No se encontro ese modelo `
+</aside>
