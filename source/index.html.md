@@ -464,6 +464,9 @@ special | BOOL | Si es taxista o servicio tipo uber | None
 Status:`ok` — msg: `Se genero un nuevo lead con exito`
 </aside>
 <aside class="warning">
+Status:`error` — msg: `El usuario aun no tiene un vehiculo registrado.`
+</aside>
+<aside class="warning">
 Status:`error` — msg: `Hubo un error al actualizar los datos.`
 </aside>
 
@@ -491,7 +494,7 @@ brand | STR | Marca del automobil | None
 ### Response
 
 <aside class="success">
-Status:`ok` — data: `Se genero un nuevo lead con exito`
+Status:`ok` — data: `{}`
 </aside>
 <aside class="warning">
 Status:`error` — msg: `No se encontro ese modelo `
